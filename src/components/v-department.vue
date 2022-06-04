@@ -70,7 +70,7 @@
                </tr>
             </thead>
          <tbody>
-         <tr v-for="(dep, i) in DEPARTMENTS" :key="i">
+         <tr v-for="(dep, i) in sortedListDepartaments" :key="i">
             <td>{{dep.DepartamentId}}</td>
             <td>{{dep.DepartamentName}}</td>
             <td>
@@ -140,41 +140,91 @@ export default {
          DepartmentId:0,
          DepartmentNameFilter:"",
          DepartmentIdFilter:"",
-         isActive: true,
 
       }),
       computed:{
          ...mapGetters(['DEPARTMENTS']),
+         sortedListDepartaments(){
+            if(this.departmentsWithoutFilter.length){
+               return this.departmentsWithoutFilter;
+            }else{
+               return this.DEPARTMENTS;
+            }
+         }
       },
       methods:{
-         ...mapActions(['GET_DEPARTMENTS', 'CREATE_DEPARTMENT']),
+         ...mapActions([
+            'GET_DEPARTMENTS', 
+            'CREATE_DEPARTMENT',
+            'REMOVE_DEPARTMENT_BY_ID',
+            'UPDATE_DEPARTMENT',
+            ]),
          refreshData(){
             this.GET_DEPARTMENTS();
-            this.departmentsWithoutFilter = this.DEPARTMENTS;
          },
          addClick(){
-            // this.isActive = !this.isActive;
             this.modalTitle="Add Department";
             this.DepartmentId=0;
             this.DepartmentName="";
          },
          editClick(dep){
-            this.isActive = !this.isActive;
             this.modalTitle="Edit Department";
             this.DepartmentId=dep.DepartamentId;
             this.DepartmentName=dep.DepartamentName;
          },
          createClick(){
-            let res;
-            res = this.CREATE_DEPARTMENT(this.DepartmentName)
-            .then((response)=>{
+             this.CREATE_DEPARTMENT(this.DepartmentName)
+            .then(response =>{
+               alert(response);
                this.refreshData();
             });
-            alert(res.data);
          },
+         deleteClick(id){
+            if(!confirm("Are you sure?")){
+                  return;
+            }
+            this.REMOVE_DEPARTMENT_BY_ID(id)
+            .then(response =>{
+               alert(response);
+               this.refreshData();
+            });
+         },
+         updateClick(){
+            this.UPDATE_DEPARTMENT({id: this.DepartmentId, name: this.DepartmentName})
+             .then(response =>{
+               alert(response);
+               this.refreshData();
+            });
+         },
+         FilterFn(){
+            var DepartmentIdFilter = this.DepartmentIdFilter;
+            var DepartmentNameFilter = this.DepartmentNameFilter;
+            this.departmentsWithoutFilter = [...this.DEPARTMENTS]
+
+             this.departmentsWithoutFilter = this.departmentsWithoutFilter.filter(
+                  function(el){
+                     return el.DepartamentId.toString().toLowerCase().includes(
+                        DepartmentIdFilter.toString().trim().toLowerCase()
+                     )&&
+                     el.DepartamentName.toString().toLowerCase().includes(
+                        DepartmentNameFilter.toString().trim().toLowerCase()
+                     )
+                  });
+         },
+         sortResult(prop,asc){
+            this.departmentsWithoutFilter = [...this.DEPARTMENTS]
+            this.departmentsWithoutFilter = this.departmentsWithoutFilter.sort(function(a,b){
+                  if(asc){
+                     return (a[prop]>b[prop])?1:((a[prop]<b[prop])?-1:0);
+                  }
+                  else{
+                     return (b[prop]>a[prop])?1:((b[prop]<a[prop])?-1:0);
+                  }
+            })
+         }
       },
       mounted(){
-         this. refreshData();
+         this.refreshData();
       }
 
    }
