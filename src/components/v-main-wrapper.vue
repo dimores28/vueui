@@ -1,5 +1,5 @@
 <template>
-  <div class="v-main-wrapper container">
+   <div class="v-main-wrapper container">
        <h3 class="d-flex justify-content-center">
           Vue JS Front End
       </h3>
@@ -23,31 +23,15 @@
           </li>
           </ul>
       </nav>
-
-    <router-view></router-view>
    </div>
-
 </template>
 
 <script>
-
-import vMainWrapper from './components/v-main-wrapper.vue'
-
 export default {
-  name: 'App',
-  components: {
-    vMainWrapper
-  }
+   name: 'v-main-wrapper',
 }
 </script>
 
 <style lang="less">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  // text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+
 </style>
