@@ -1,5 +1,5 @@
 <template>
-   <div>
+   <div class="v-department">
       <button type="button"
          class="btn btn-primary m-2 fload-end"
          data-bs-toggle="modal"
@@ -143,7 +143,7 @@ export default {
 
       }),
       computed:{
-         ...mapGetters(['DEPARTMENTS']),
+         ...mapGetters('depaartment',['DEPARTMENTS']),
          sortedListDepartaments(){
             if(this.departmentsWithoutFilter.length){
                return this.departmentsWithoutFilter;
@@ -153,7 +153,8 @@ export default {
          }
       },
       methods:{
-         ...mapActions([
+         ...mapActions('depaartment',
+            [
             'GET_DEPARTMENTS', 
             'CREATE_DEPARTMENT',
             'REMOVE_DEPARTMENT_BY_ID',

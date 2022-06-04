@@ -1,16 +1,18 @@
 <template>
   <v-main></v-main>
-  <v-department></v-department>
+  <v-employee></v-employee>
 </template>
 
 <script>
 import vMain from './components/v-main.vue'
 import vDepartment from './components/v-department.vue'
+import vEmployee from './components/v-employee.vue'
 export default {
   name: 'App',
   components: {
     vMain,
-    vDepartment
+    vDepartment,
+    vEmployee
   }
 }
 </script>
